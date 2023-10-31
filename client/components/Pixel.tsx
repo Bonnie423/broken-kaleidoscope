@@ -1,12 +1,8 @@
-import e from 'express'
 import { useEffect, useState } from 'react'
 import { MouseEvent } from 'react'
-interface Props {
-  color: string
-}
 
-const Pixel = ({ color }: Props) => {
-  const [colors, setColors] = useState(color)
+const Pixel = () => {
+  const [colors, setColors] = useState(getRandomColor())
 
   function getRandomColor() {
     return `#${Math.floor(Math.random() * 0x1000000)
@@ -28,20 +24,22 @@ const Pixel = ({ color }: Props) => {
     setColors('yellow')
   }
 
-  function handleRightClick(event) {
+  function handleRightClick(
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) {
     event.preventDefault()
     setColors('black')
   }
 
   useEffect(() => {
-    const timer = setInterval(
-      () => setColors(getRandomColor()), 2000)
+    const timer = setInterval(() => setColors(getRandomColor()), 1000)
 
     return () => clearInterval(timer)
   }, [])
   return (
     <>
       <button
+       data-testid="button"
         style={{ height: '20px', width: '20px', backgroundColor: colors }}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
